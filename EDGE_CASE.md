@@ -19,7 +19,7 @@ Reason: Prevents invalid updates safely.
 
 When deleting via DELETE /students/<int:student_id>, if not found, return 404 {"error": "student not found"}. 
 
-Reason: Avoids silent failures on missing resources. 
+Reason: Avoids failures on wrong resources. 
 
 **Edge Case: No marks in GET /stats**
 
