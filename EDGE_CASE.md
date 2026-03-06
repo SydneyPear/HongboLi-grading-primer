@@ -1,4 +1,5 @@
 **Edge Case: Missing mark when creating student via POST /students**
+
 When creating a student via POST /students, the 'mark' field is not optional. Store NULL in the database and exclude it from statistics (average, min, max).
 
 Reason: This allows students to exist before marks are released, while keeping database statistics accurate by filtering out NULL values in the /stats endpoint.
