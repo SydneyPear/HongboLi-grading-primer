@@ -9,12 +9,34 @@ services:
     # Data inside the container is lost on restart unless you persist it with a volume.
     ports:
       - "5432:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - grading-data:/var/lib/postgresql/data
 
   backend:
+    build: ./backend
+    container_name: grading-backend
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: marksdb
+      DB_USER: marksuser
+      DB_PASSWORD: markspass
+    ports:
+      - "5000:5000"
     # TODO: you will need to add to this
 
   frontend:
-    # TODO: you will need to add to this
+    build: ./frontend
+    container_name: grading-frontend
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    environment:
+      - VITE_API_URL=http://localhost:5000
 
   automark:
     build: ./automark
@@ -23,3 +45,5 @@ services:
       - db
     profiles:
       - debug
+volumes:
+  grading-data:
